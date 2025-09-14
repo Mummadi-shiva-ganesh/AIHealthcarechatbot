@@ -6,7 +6,6 @@ import {
   FaMapMarkerAlt, 
   FaCalendarAlt, 
   FaSearch,
-  FaFilter,
   FaInfoCircle,
   FaBell,
   FaShieldAlt,

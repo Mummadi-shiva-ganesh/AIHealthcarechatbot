@@ -7,8 +7,7 @@ import {
   FaShieldAlt, 
   FaStethoscope,
   FaExclamationTriangle,
-  FaInfoCircle,
-  FaFilter
+  FaInfoCircle
 } from 'react-icons/fa';
 import axios from 'axios';
 import { toast } from 'react-toastify';

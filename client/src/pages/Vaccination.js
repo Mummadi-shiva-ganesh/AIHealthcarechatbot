@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import styled from 'styled-components';
 import { motion } from 'framer-motion';
 import { 
@@ -6,7 +6,6 @@ import {
   FaCalendarAlt, 
   FaShieldAlt, 
   FaSearch,
-  FaFilter,
   FaCheckCircle,
   FaExclamationTriangle,
   FaInfoCircle,
@@ -301,7 +300,7 @@ const Vaccination = () => {
 
   useEffect(() => {
     filterVaccines();
-  }, [vaccines, searchTerm, selectedAgeGroup]);
+  }, [filterVaccines]);
 
   const fetchVaccines = async () => {
     try {
@@ -315,7 +314,7 @@ const Vaccination = () => {
     }
   };
 
-  const filterVaccines = () => {
+  const filterVaccines = useCallback(() => {
     let filtered = vaccines;
 
     if (searchTerm) {
@@ -332,7 +331,7 @@ const Vaccination = () => {
     }
 
     setFilteredVaccines(filtered);
-  };
+  }, [vaccines, searchTerm, selectedAgeGroup]);
 
   const ageGroups = [...new Set(vaccines.map(vaccine => vaccine.age_group))];
 
