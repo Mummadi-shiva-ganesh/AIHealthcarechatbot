@@ -4,7 +4,6 @@ import { motion } from 'framer-motion';
 import { 
   FaSyringe, 
   FaCalendarAlt, 
-  FaShieldAlt, 
   FaSearch,
   FaCheckCircle,
   FaExclamationTriangle,
@@ -294,6 +293,25 @@ const Vaccination = () => {
   const [selectedAgeGroup, setSelectedAgeGroup] = useState('');
   const [loading, setLoading] = useState(true);
 
+  const filterVaccines = useCallback(() => {
+    let filtered = vaccines;
+
+    if (searchTerm) {
+      filtered = filtered.filter(vaccine =>
+        vaccine.vaccine_name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        vaccine.description.toLowerCase().includes(searchTerm.toLowerCase())
+      );
+    }
+
+    if (selectedAgeGroup) {
+      filtered = filtered.filter(vaccine =>
+        vaccine.age_group === selectedAgeGroup
+      );
+    }
+
+    setFilteredVaccines(filtered);
+  }, [vaccines, searchTerm, selectedAgeGroup]);
+
   useEffect(() => {
     fetchVaccines();
   }, []);
@@ -313,25 +331,6 @@ const Vaccination = () => {
       setLoading(false);
     }
   };
-
-  const filterVaccines = useCallback(() => {
-    let filtered = vaccines;
-
-    if (searchTerm) {
-      filtered = filtered.filter(vaccine =>
-        vaccine.vaccine_name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        vaccine.description.toLowerCase().includes(searchTerm.toLowerCase())
-      );
-    }
-
-    if (selectedAgeGroup) {
-      filtered = filtered.filter(vaccine =>
-        vaccine.age_group === selectedAgeGroup
-      );
-    }
-
-    setFilteredVaccines(filtered);
-  }, [vaccines, searchTerm, selectedAgeGroup]);
 
   const ageGroups = [...new Set(vaccines.map(vaccine => vaccine.age_group))];
 

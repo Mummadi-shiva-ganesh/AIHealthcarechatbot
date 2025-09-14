@@ -10,10 +10,7 @@ import {
   FaLanguage,
   FaEdit,
   FaSave,
-  FaTimes,
-  FaEye,
-  FaEyeSlash,
-  FaLock
+  FaTimes
 } from 'react-icons/fa';
 import { useAuth } from '../contexts/AuthContext';
 import { toast } from 'react-toastify';
@@ -190,26 +187,6 @@ const Select = styled.select`
   }
 `;
 
-const PasswordGroup = styled.div`
-  position: relative;
-`;
-
-const PasswordToggle = styled.button`
-  position: absolute;
-  right: 1rem;
-  top: 50%;
-  transform: translateY(-50%);
-  background: none;
-  border: none;
-  color: #6c757d;
-  cursor: pointer;
-  font-size: 1.1rem;
-  transition: color 0.3s ease;
-
-  &:hover {
-    color: #667eea;
-  }
-`;
 
 const ButtonGroup = styled.div`
   display: flex;
@@ -291,16 +268,6 @@ const Profile = () => {
     location: '',
     preferred_language: 'en'
   });
-  const [passwordData, setPasswordData] = useState({
-    currentPassword: '',
-    newPassword: '',
-    confirmPassword: ''
-  });
-  const [showPasswords, setShowPasswords] = useState({
-    current: false,
-    new: false,
-    confirm: false
-  });
 
   useEffect(() => {
     if (user) {
@@ -323,20 +290,6 @@ const Profile = () => {
     }));
   };
 
-  const handlePasswordChange = (e) => {
-    const { name, value } = e.target;
-    setPasswordData(prev => ({
-      ...prev,
-      [name]: value
-    }));
-  };
-
-  const togglePasswordVisibility = (field) => {
-    setShowPasswords(prev => ({
-      ...prev,
-      [field]: !prev[field]
-    }));
-  };
 
   const handleSave = async () => {
     setLoading(true);

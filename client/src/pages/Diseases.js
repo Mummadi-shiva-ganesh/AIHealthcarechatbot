@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import styled from 'styled-components';
 import { motion } from 'framer-motion';
 import { 
@@ -6,8 +6,7 @@ import {
   FaVirus, 
   FaShieldAlt, 
   FaStethoscope,
-  FaExclamationTriangle,
-  FaInfoCircle
+  FaExclamationTriangle
 } from 'react-icons/fa';
 import axios from 'axios';
 import { toast } from 'react-toastify';
@@ -295,27 +294,7 @@ const Diseases = () => {
   const [selectedCategory, setSelectedCategory] = useState('');
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    fetchDiseases();
-  }, []);
-
-  useEffect(() => {
-    filterDiseases();
-  }, [diseases, searchTerm, selectedCategory]);
-
-  const fetchDiseases = async () => {
-    try {
-      const response = await axios.get('/diseases');
-      setDiseases(response.data.diseases);
-    } catch (error) {
-      console.error('Error fetching diseases:', error);
-      toast.error('Failed to load diseases');
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const filterDiseases = () => {
+  const filterDiseases = useCallback(() => {
     let filtered = diseases;
 
     if (searchTerm) {
@@ -333,6 +312,26 @@ const Diseases = () => {
     }
 
     setFilteredDiseases(filtered);
+  }, [diseases, searchTerm, selectedCategory]);
+
+  useEffect(() => {
+    fetchDiseases();
+  }, []);
+
+  useEffect(() => {
+    filterDiseases();
+  }, [filterDiseases]);
+
+  const fetchDiseases = async () => {
+    try {
+      const response = await axios.get('/diseases');
+      setDiseases(response.data.diseases);
+    } catch (error) {
+      console.error('Error fetching diseases:', error);
+      toast.error('Failed to load diseases');
+    } finally {
+      setLoading(false);
+    }
   };
 
   const categories = [...new Set(diseases.map(disease => disease.category))];

@@ -5,7 +5,6 @@ import {
   FaPaperPlane, 
   FaRobot, 
   FaUser, 
-  FaLanguage,
   FaDownload,
   FaTrash
 } from 'react-icons/fa';

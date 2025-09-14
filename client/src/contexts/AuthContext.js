@@ -87,7 +87,7 @@ export const AuthProvider = ({ children }) => {
 
   const updateProfile = async (profileData) => {
     try {
-      const response = await axios.put('/user/profile', profileData);
+      await axios.put('/user/profile', profileData);
       setUser(prev => ({ ...prev, ...profileData }));
       toast.success('Profile updated successfully!');
       return { success: true };

@@ -7,7 +7,6 @@ import {
   FaSyringe, 
   FaExclamationTriangle,
   FaDownload,
-  FaChartLine,
   FaUser,
   FaCalendarAlt,
   FaMapMarkerAlt,

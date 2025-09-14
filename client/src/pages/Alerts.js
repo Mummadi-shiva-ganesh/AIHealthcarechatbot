@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import styled from 'styled-components';
 import { motion } from 'framer-motion';
 import { 
@@ -7,10 +7,7 @@ import {
   FaCalendarAlt, 
   FaSearch,
   FaInfoCircle,
-  FaBell,
-  FaShieldAlt,
-  FaEye,
-  FaEyeSlash
+  FaBell
 } from 'react-icons/fa';
 import axios from 'axios';
 import { toast } from 'react-toastify';
@@ -355,23 +352,7 @@ const Alerts = () => {
     fetchAlerts();
   }, []);
 
-  useEffect(() => {
-    filterAlerts();
-  }, [alerts, searchTerm, selectedSeverity]);
-
-  const fetchAlerts = async () => {
-    try {
-      const response = await axios.get('/outbreak-alerts');
-      setAlerts(response.data.alerts);
-    } catch (error) {
-      console.error('Error fetching alerts:', error);
-      toast.error('Failed to load health alerts');
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const filterAlerts = () => {
+  const filterAlerts = useCallback(() => {
     let filtered = alerts;
 
     if (searchTerm) {
@@ -389,6 +370,22 @@ const Alerts = () => {
     }
 
     setFilteredAlerts(filtered);
+  }, [alerts, searchTerm, selectedSeverity]);
+
+  useEffect(() => {
+    filterAlerts();
+  }, [filterAlerts]);
+
+  const fetchAlerts = async () => {
+    try {
+      const response = await axios.get('/outbreak-alerts');
+      setAlerts(response.data.alerts);
+    } catch (error) {
+      console.error('Error fetching alerts:', error);
+      toast.error('Failed to load health alerts');
+    } finally {
+      setLoading(false);
+    }
   };
 
   const severities = [...new Set(alerts.map(alert => alert.severity))];
